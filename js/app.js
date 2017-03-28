@@ -1,7 +1,7 @@
 var newAdd=document.getElementById("input");
 var resources=[];
 var adicionar=document.getElementById("crear");
-var array;
+//var array;
 
 
 function close(event){
@@ -25,15 +25,11 @@ window.addEventListener('load', cargaDoc);
 
 //función que convierte en un arreglo lo ingresado en el input
 function addResource (){
-  for(var i=0; i<resources.length;i++){
-    var array=(resources[i]._nombre).split(",");
-      console.log(array);
-    for(var j=0; j< array.length;j++){
-      var text= array[j];
-      console.log(text);
-      cuentaSpan(text);
-      refrescar(newAdd);
-    }
+  for (var prop in resources) {
+    var text= resources[prop]._nombre;
+    console.log(text);
+    cuentaSpan(text);
+    refrescar(newAdd);
   }
 }
 
@@ -69,18 +65,19 @@ function crearSpan(text1){
 
 //función elimina elemento
 function eliminar(elemento){
+    console.log(elemento);
     var id=elemento.parentNode.getAttribute("id");
     console.log(id);
     node=document.getElementById(id);
     node.parentNode.removeChild(node);
-    removeItemFromArr(array,id);
+    removeItemFromArr(id);
 }
 
-function removeItemFromArr ( arr, item ) {
-    var i = arr.indexOf( item );
-
-    if ( i !== -1 ) {
-        arr.splice( i, 1 );
+function removeItemFromArr(item) {
+    for (var prop  in resources) {
+      if(resources[prop]._nombre==item){
+       delete resources[prop];
+      }
     }
 }
 
@@ -91,8 +88,11 @@ function Recurso (nombre){
 
 //función para agregar objetos al arreglo
 function agregar(event){
-  var nuevoRecurso = new Recurso(newAdd.value);
-  resources.push(nuevoRecurso);
+  var resourcesSeparar=newAdd.value.split(",");
+  for(var i=0; i<resourcesSeparar.length;i++){
+    var nuevoRecurso = new Recurso(resourcesSeparar[i]);
+    resources.push(nuevoRecurso);
+  }
   addResource();
 }
 
