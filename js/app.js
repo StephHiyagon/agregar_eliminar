@@ -1,8 +1,7 @@
 var newAdd=document.getElementById("input");
 var resources=[];
 var adicionar=document.getElementById("crear");
-var array;
-
+//transformando un arreglo de objetos en uno simple;
 
 function close(event){
   document.getElementById('ocultar').style.display = 'none';
@@ -25,15 +24,11 @@ window.addEventListener('load', cargaDoc);
 
 //función que convierte en un arreglo lo ingresado en el input
 function addResource (){
-  for(var i=0; i<resources.length;i++){
-    var array=(resources[i]._nombre).split(",");
-      console.log(array);
-    for(var j=0; j< array.length;j++){
-      var text= array[j];
-      console.log(text);
-      cuentaSpan(text);
-      refrescar(newAdd);
-    }
+  for (var prop in resources) {
+    var text= resources[prop]._nombre;
+    console.log(text);
+    cuentaSpan(text);
+    refrescar(newAdd);
   }
 }
 
@@ -69,16 +64,24 @@ function crearSpan(text1){
 
 //función elimina elemento
 function eliminar(elemento){
+    console.log(elemento);
     var id=elemento.parentNode.getAttribute("id");
     console.log(id);
     node=document.getElementById(id);
     node.parentNode.removeChild(node);
-    removeItemFromArr(array,id);
+    removeItemFromArr(resources, id);
 }
 
 function removeItemFromArr ( arr, item ) {
-    var i = arr.indexOf( item );
+    console.log(arr);
+    var valores=arr.map(function(e){
+    return e._nombre;
+  })
+    console.log(valores);
 
+    var i = valores.indexOf( item );
+    console.log(item);
+    console.log(i);
     if ( i !== -1 ) {
         arr.splice( i, 1 );
     }
@@ -91,9 +94,13 @@ function Recurso (nombre){
 
 //función para agregar objetos al arreglo
 function agregar(event){
-  var nuevoRecurso = new Recurso(newAdd.value);
-  resources.push(nuevoRecurso);
+  var resourcesSeparar=newAdd.value.split(",");
+  for(var i=0; i<resourcesSeparar.length;i++){
+    var nuevoRecurso = new Recurso(resourcesSeparar[i]);
+    resources.push(nuevoRecurso);
+  }
   addResource();
+  console.log(resources);
 }
 
 
